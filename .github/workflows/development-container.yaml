@@ -1,4 +1,4 @@
-name: Build and publish development-container
+name: development-container build
 
 on:
   push:
@@ -21,12 +21,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      -
-        name: Docker meta
+      
+      - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
         with:
           images: ghcr.io/${{ github.actor }}/development-container
+      
+      - name: Set up QEMU
+        id: qemu
+        uses: docker/setup-qemu-action@v1
+        with:
+          image: tonistiigi/binfmt:latest
+          platforms: all
 
       # setup Docker buld action
       - name: Set up Docker Buildx
