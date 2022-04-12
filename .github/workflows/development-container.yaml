@@ -3,12 +3,12 @@ name: Build and publish development-container
 on:
   push:
     branches:
-      - 'main'
+      - 'master'
     tags:
       - 'v*'
   pull_request:
     branches:
-      - 'main'
+      - 'master'
 
 jobs:
   # define job to build and publish docker image
@@ -48,8 +48,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          # build on feature branches, push only on main branch
-          push: ${{ github.ref == 'refs/heads/main' }}
+          # build on feature branches, push only on master branch
+          push: ${{ github.ref == 'refs/heads/master' }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
