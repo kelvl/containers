@@ -11,8 +11,8 @@ ln -sfn /opt/brother/docker_skey/config/brscan-skey.config /opt/brother/scanner/
 
 # turn on debug mode if passed in
 if [ -n $SKEY_DEBUG_MODE ]; then
-    DEBUG_MODE=--debug-mode $SKEY_DEBUG_MODE
+    DEBUG_MODE="--debug-mode $SKEY_DEBUG_MODE"
 fi
 
 # start brscan-skey in foreground
-/usr/bin/brscan-skey -f $DEBUG_MODE
+/usr/bin/brscan-skey -f "$DEBUG_MODE"
