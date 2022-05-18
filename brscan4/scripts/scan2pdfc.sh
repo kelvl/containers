@@ -60,6 +60,6 @@ if [ ! -e "$OUTPUT" ];then
    $SCANIMAGE $OPT
 fi
 
-tiff2pdf -n -o "$OUTPUT_PDF" "$OUTPUT"
+tiff2pdf -j -q 80 -o "$OUTPUT_PDF" "$OUTPUT"
 
 rm -f "$OUTPUT"
