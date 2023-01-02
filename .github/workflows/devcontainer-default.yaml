@@ -39,5 +39,6 @@ jobs:
           subFolder: devcontainer-default
           imageName: ghcr.io/${{ github.actor }}/devcontainer-default
           imageTag: latest
-          platform: linux/amd64,linux/arm64
+          # platform doesn't fully work yet https://github.com/devcontainers/ci/issues/151
+          # platform: linux/amd64,linux/arm64
           push: always
