@@ -2,6 +2,8 @@ name: brscan4 build
 
 on:
   push:
+    paths:
+      - "brscan4/**"
     branches:
       - "master"
     tags:

@@ -2,6 +2,8 @@ name: devcontainer-default build
 
 on:
   push:
+    paths:
+      - "devcontainer-default/**"
     branches:
       - "master"
     tags:
