@@ -1,0 +1,4 @@
+#!/command/execlineb -P
+pipeline -w { sed --unbuffered "s/^/[dbus] /" }
+fdmove -c 2 1
+dbus-daemon --config-file=/usr/share/dbus-1/system.conf --print-address --nofork
