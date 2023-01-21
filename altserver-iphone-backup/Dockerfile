@@ -49,6 +49,10 @@ ENV USBMUXD_SOCKET_ADDRESS="127.0.0.1:27015"
 
 RUN rm -rf /build
 
+RUN mkdir -p /run/dbus
+
+WORKDIR /opt
+
 # Install s6
 ADD https://github.com/just-containers/s6-overlay/releases/download/v3.1.3.0/s6-overlay-noarch.tar.xz /tmp
 RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
