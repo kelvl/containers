@@ -21,9 +21,8 @@ RUN apt-get -y update && apt-get install -y \
     usbutils \
     iproute2 \
     libimobiledevice-utils \
-    python3
-
-RUN sed -i 's/.*enable-dbus=.*/enable-dbus=no/' /etc/avahi/avahi-daemon.conf
+    python3 \ 
+    procps
 
 WORKDIR /build
 
@@ -44,6 +43,9 @@ RUN wget https://github.com/NyaMisty/AltServer-Linux/releases/download/${ALTSERV
 RUN wget https://github.com/jkcoxson/netmuxd/releases/download/${NETMUXD_VERSION}/x86_64-linux-netmuxd && \
     mv x86_64-linux-netmuxd /opt/netmuxd && \
     chmod +x /opt/netmuxd
+
+ENV ALTSERVER_ANISETTE_SERVER="http://127.0.0.1:6969"
+ENV USBMUXD_SOCKET_ADDRESS="127.0.0.1:27015"
 
 RUN rm -rf /build
 
