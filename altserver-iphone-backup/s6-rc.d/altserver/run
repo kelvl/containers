@@ -1,4 +1,7 @@
 #!/command/execlineb -P
+# altserver requires avahi to be fully started so that it can advertise mdns record on startup
+# sleeping 10s to give it time
+foreground { sleep 10 }
 pipeline -w { sed --unbuffered "s/^/[altserver] /" }
 with-contenv
 fdmove -c 2 1
