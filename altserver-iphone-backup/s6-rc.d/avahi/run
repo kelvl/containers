@@ -1,0 +1,4 @@
+#!/command/execlineb -P
+pipeline -w { sed --unbuffered "s/^/[avahi] /" }
+fdmove -c 2 1
+avahi-daemon

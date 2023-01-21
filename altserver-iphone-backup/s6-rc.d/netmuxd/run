@@ -1,0 +1,4 @@
+#!/command/execlineb -P
+pipeline -w { sed --unbuffered "s/^/[netmuxd] /" }
+fdmove -c 2 1
+/opt/netmuxd --disable-unix --host 127.0.0.1

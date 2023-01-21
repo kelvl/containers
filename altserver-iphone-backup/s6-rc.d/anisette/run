@@ -1,0 +1,6 @@
+#!/command/execlineb -P
+pipeline -w { sed --unbuffered "s/^/[anisette] /" }
+fdmove -c 2 1
+with-contenv
+cd /opt
+/opt/anisette_server -r -p 6969

@@ -1,0 +1,8 @@
+#!/command/execlineb -P
+pipeline -w { sed --unbuffered "s/^/[altserver] /" }
+with-contenv
+fdmove -c 2 1
+export ALTSERVER_ANISETTE_SERVER "http://127.0.0.1:6969"
+importas -i ALTSERVER_USER ALTSERVER_USER
+importas -i ALTSERVER_PASSWORD ALTSERVER_PASSWORD
+/opt/altserver -a $ALTSERVER_USER -p $ALTSERVER_PASSWORD

@@ -47,7 +47,13 @@ RUN wget https://github.com/jkcoxson/netmuxd/releases/download/${NETMUXD_VERSION
 
 RUN rm -rf /build
 
-WORKDIR /opt
+# Install s6
+ADD https://github.com/just-containers/s6-overlay/releases/download/v3.1.3.0/s6-overlay-noarch.tar.xz /tmp
+RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
 
+ADD https://github.com/just-containers/s6-overlay/releases/download/v3.1.3.0/s6-overlay-x86_64.tar.xz /tmp
+RUN tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz
 
+ADD s6-rc.d /etc/s6-overlay/s6-rc.d
 
+ENTRYPOINT [ "/init" ]

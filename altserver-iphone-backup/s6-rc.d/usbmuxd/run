@@ -1,0 +1,4 @@
+#!/command/execlineb -P
+pipeline -w { sed --unbuffered "s/^/[usbmuxd] /" }
+fdmove -c 2 1
+usbmuxd -f 
