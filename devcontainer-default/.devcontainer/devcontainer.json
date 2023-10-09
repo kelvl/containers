@@ -3,12 +3,13 @@
 {
     "name": "Default debian",
     // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-    "image": "mcr.microsoft.com/devcontainers/base:bullseye",
+    "image": "mcr.microsoft.com/devcontainers/base:bookworm",
     "features": {
         "ghcr.io/devcontainers/features/sshd:1": {},
         "ghcr.io/devcontainers/features/terraform:1": {},
         "ghcr.io/devcontainers/features/docker-in-docker:2": {},
-        "ghcr.io/devcontainers-contrib/features/asdf-package:1": {}
+        "ghcr.io/devcontainers-contrib/features/asdf-package:1": {},
+        "ghcr.io/devcontainers-contrib/features/direnv-asdf:2": {}
     },
     // Features to add to the dev container. More info: https://containers.dev/features.
     // "features": {},
