@@ -1,0 +1,35 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
+    ':dependencyDashboard',
+    ':semanticCommits',
+  ],
+  // Keep the Dockerfile base images (e.g. debian:stable-slim) and the GitHub
+  // Actions workflow versions current. A merged base-image bump lands on the
+  // default branch and the paths-filtered build workflow rebuilds & pushes a
+  // fresh image, so downstream digest pins pick up the new build.
+  enabledManagers: [
+    'dockerfile',
+    'github-actions',
+  ],
+  labels: [
+    'renovate',
+  ],
+  packageRules: [
+    {
+      description: 'Group Dockerfile base-image updates per image directory',
+      matchManagers: [
+        'dockerfile',
+      ],
+      commitMessageTopic: '{{depName}}',
+    },
+    {
+      description: 'Batch GitHub Actions bumps into one PR',
+      matchManagers: [
+        'github-actions',
+      ],
+      groupName: 'github-actions',
+    },
+  ],
+}
