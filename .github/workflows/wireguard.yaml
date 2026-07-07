@@ -9,6 +9,8 @@ on:
     tags:
       - "v*"
   pull_request:
+    paths:
+      - "wireguard/**"
     branches:
       - "master"
 
@@ -24,17 +26,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Compute container version (dir content hash)
+        id: ver
+        # `HEAD:wireguard` is the git tree object of the directory — a content
+        # hash that changes only when files under wireguard/ change, so the
+        # published version bumps only when the container's data actually does.
+        run: echo "sha=$(git rev-parse 'HEAD:wireguard' | cut -c1-12)" >> "$GITHUB_OUTPUT"
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
         with:
           images: ghcr.io/${{ github.actor }}/wireguard
-          # emit a stable `latest` on the default branch so downstreams can pin
-          # `latest@sha256:<digest>` and let Renovate track the digest.
+          # `latest` (stable pin target) + the content-hash version. Combined with
+          # the paths-filtered triggers, the version tag only appears/changes when
+          # wireguard/ changes.
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ steps.ver.outputs.sha }}
             type=ref,event=pr
-            type=sha
 
       - name: Set up QEMU
         id: qemu

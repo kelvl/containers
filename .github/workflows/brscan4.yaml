@@ -9,6 +9,8 @@ on:
     tags:
       - "v*"
   pull_request:
+    paths:
+      - "brscan4/**"
     branches:
       - "master"
 
@@ -24,11 +26,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Compute container version (dir content hash)
+        id: ver
+        # `HEAD:brscan4` is the git tree object of the directory — a content hash
+        # that changes only when files under brscan4/ change, so the published
+        # version bumps only when the container's data actually does.
+        run: echo "sha=$(git rev-parse 'HEAD:brscan4' | cut -c1-12)" >> "$GITHUB_OUTPUT"
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
         with:
           images: ghcr.io/${{ github.actor }}/brscan4
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ steps.ver.outputs.sha }}
+            type=ref,event=pr
 
       - name: Set up QEMU
         id: qemu
