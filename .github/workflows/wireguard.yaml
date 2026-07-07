@@ -1,14 +1,16 @@
-name: altserver-iphone-backup build
+name: wireguard build
 
 on:
   push:
     paths:
-      - "altserver-iphone-backup/**"
+      - "wireguard/**"
     branches:
       - "master"
     tags:
       - "v*"
   pull_request:
+    paths:
+      - "wireguard/**"
     branches:
       - "master"
 
@@ -24,11 +26,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Compute container version (dir content hash)
+        id: ver
+        # `HEAD:wireguard` is the git tree object of the directory — a content
+        # hash that changes only when files under wireguard/ change, so the
+        # published version bumps only when the container's data actually does.
+        run: echo "sha=$(git rev-parse 'HEAD:wireguard' | cut -c1-12)" >> "$GITHUB_OUTPUT"
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ghcr.io/${{ github.actor }}/altserver-iphone-backup
+          images: ghcr.io/${{ github.actor }}/wireguard
+          # `latest` (stable pin target) + the content-hash version. Combined with
+          # the paths-filtered triggers, the version tag only appears/changes when
+          # wireguard/ changes.
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ steps.ver.outputs.sha }}
+            type=ref,event=pr
 
       - name: Set up QEMU
         id: qemu
@@ -49,12 +65,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build image and push to Docker Hub and GitHub Container Registry
+      - name: Build image and push to GitHub Container Registry
         uses: docker/build-push-action@v2
         with:
           # relative path to the place where source code with Dockerfile is located
-          context: ./altserver-iphone-backup
-          platforms: linux/amd64 #,linux/arm64 disabled arm64 since brother drivers are only available for x64
+          context: ./wireguard
+          platforms: linux/amd64 # Talos cluster nodes are amd64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           # build on feature branches, push only on master branch
